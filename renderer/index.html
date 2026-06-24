@@ -1,0 +1,2251 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo Today</title>
+<style>
+/* ============================================================
+   Theme Variables — Light (default) & Dark
+   ============================================================ */
+:root, [data-theme="light"] {
+  /* ---- Glass base palette ---- */
+  --glass-bg-base:   rgba(242, 244, 248, 0.62);
+  --glass-bg-hi:     rgba(255, 255, 255, 0.38);
+  --glass-bg-lo:     rgba(220, 225, 235, 0.28);
+  --glass-radial-1:  rgba(200, 210, 230, 0.22);
+  --glass-radial-2:  rgba(180, 195, 220, 0.18);
+  --glass-border:     rgba(128, 138, 158, 0.14);
+  --glass-border-hi: rgba(196, 204, 220, 0.30);
+  --glass-surface:    rgba(255, 255, 255, 0.30);
+  --glass-surface-hi:rgba(255, 255, 255, 0.55);
+  --glass-surface-hover: rgba(255,255,255,0.45);
+  --glass-input:      rgba(255, 255, 255, 0.40);
+  --glass-input-focus:rgba(255, 255, 255, 0.72);
+  --glass-shadow:     rgba(40, 50, 80, 0.10);
+  --glass-edge-hi:   rgba(255, 255, 255, 0.55);
+  --glass-edge-lo:   rgba(180, 190, 210, 0.20);
+  --glass-context:    rgba(255,255,255,0.92);
+  --glass-dialog:     rgba(255,255,255,0.94);
+  --glass-overlay:    rgba(20, 25, 40, 0.35);
+  --glass-tag-surface:rgba(255,255,255,0.30);
+  --glass-tag-shadow: rgba(40,50,80,0.08);
+  --glass-calendar-day: rgba(255,255,255,0.40);
+  --glass-calendar-day-hover: rgba(255,255,255,0.60);
+  --glass-cal-detail: rgba(255,255,255,0.35);
+  --glass-empty-hint: rgba(128,138,158,0.18);
+  --glass-ripple:    rgba(255, 255, 255, 0.45);
+  --glass-noise-opacity: 0.035;
+
+  /* ---- Text ---- */
+  --text-primary:     #1C1C2E;
+  --text-secondary:   #5A5D72;
+  --text-tertiary:    #9CA0B4;
+  --text-placeholder: #B8BCC8;
+  --text-input:       #1C1C2E;
+  --text-on-accent:   #FFFFFF;
+  --text-done:        rgba(156,160,180,0.5);
+  --text-bold:        #111111;
+  --text-memo:        #1C1C2E;
+
+  /* ---- Accent (unchanged between themes) ---- */
+  --accent:           #3B82F6;
+  --accent-soft:      #60A5FA;
+  --accent-surface:   rgba(59, 130, 246, 0.08);
+  --accent-glow:      rgba(59, 130, 246, 0.20);
+  --accent-scrollbar: rgba(128,138,158,0.20);
+  --accent-scrollbar-hover: rgba(128,138,158,0.35);
+
+  /* ---- Semantic ---- */
+  --success:          #22C55E;
+  --success-surface:  rgba(34, 197, 94, 0.10);
+  --danger:          #EF4444;
+  --danger-surface:  rgba(239, 68, 68, 0.08);
+  --warning:         #F59E0B;
+
+  /* ---- Shape ---- */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 7px;
+  --radius-pill: 100px;
+
+  /* ---- Animation ---- */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-soft: cubic-bezier(0.25, 1.2, 0.50, 1);
+  --spring-firm: cubic-bezier(0.22, 0.90, 0.36, 1);
+  --ease-fluid: cubic-bezier(0.40, 0.00, 0.20, 1.00);
+  --ease-smooth: cubic-bezier(0.65, 0.00, 0.35, 1.00);
+  --dur-fast: 180ms;
+  --dur-normal: 320ms;
+  --dur-slow: 500ms;
+}
+
+/* ============================================================
+   Dark Glass Theme
+   ============================================================ */
+[data-theme="dark"] {
+  --glass-bg-base:   rgba(30, 33, 48, 0.68);
+  --glass-bg-hi:     rgba(255, 255, 255, 0.06);
+  --glass-bg-lo:     rgba(60, 65, 90, 0.20);
+  --glass-radial-1:  rgba(100, 120, 180, 0.12);
+  --glass-radial-2:  rgba(60, 75, 120, 0.15);
+  --glass-border:     rgba(255, 255, 255, 0.08);
+  --glass-border-hi: rgba(255, 255, 255, 0.14);
+  --glass-surface:    rgba(255, 255, 255, 0.06);
+  --glass-surface-hi:rgba(255, 255, 255, 0.12);
+  --glass-surface-hover: rgba(255,255,255,0.09);
+  --glass-input:      rgba(255, 255, 255, 0.07);
+  --glass-input-focus:rgba(255, 255, 255, 0.13);
+  --glass-shadow:     rgba(0, 0, 0, 0.30);
+  --glass-edge-hi:   rgba(255, 255, 255, 0.22);
+  --glass-edge-lo:   rgba(0, 0, 0, 0.25);
+  --glass-context:    rgba(30, 33, 48, 0.94);
+  --glass-dialog:     rgba(30, 33, 48, 0.96);
+  --glass-overlay:    rgba(0, 0, 0, 0.50);
+  --glass-tag-surface:rgba(255,255,255,0.07);
+  --glass-tag-shadow: rgba(0,0,0,0.20);
+  --glass-calendar-day: rgba(255,255,255,0.06);
+  --glass-calendar-day-hover: rgba(255,255,255,0.11);
+  --glass-cal-detail: rgba(255,255,255,0.06);
+  --glass-empty-hint: rgba(255,255,255,0.06);
+  --glass-ripple:    rgba(255, 255, 255, 0.15);
+  --glass-noise-opacity: 0.050;
+
+  --text-primary:     #EDEDF5;
+  --text-secondary:   #B8BCCB;
+  --text-tertiary:    #8489A0;
+  --text-placeholder: #6B7088;
+  --text-input:       #EDEDF5;
+  --text-on-accent:   #FFFFFF;
+  --text-done:        rgba(107,111,133,0.5);
+  --text-bold:        #F0F0F8;
+  --text-memo:        #E8E8F0;
+
+  --accent:           #60A5FA;
+  --accent-soft:      #7EC8FA;
+  --accent-surface:   rgba(96, 165, 250, 0.12);
+  --accent-glow:      rgba(96, 165, 250, 0.25);
+  --accent-scrollbar: rgba(255,255,255,0.12);
+  --accent-scrollbar-hover: rgba(255,255,255,0.22);
+
+  --success:          #34D670;
+  --success-surface:  rgba(52, 214, 112, 0.12);
+  --danger:          #FF6B6B;
+  --danger-surface:   rgba(255, 107, 107, 0.10);
+  --warning:         #F5C842;
+
+  --glass-shadow:     rgba(0, 0, 0, 0.35);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Microsoft YaHei", sans-serif;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  height: 100vh;
+  border-radius: var(--radius);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: color var(--dur-normal) var(--ease-fluid);
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--glass-noise-opacity);
+  mix-blend-mode: overlay;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ============================================================
+   Shell — multi-layer liquid glass
+   ============================================================ */
+#app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow:
+    0 2px 24px var(--glass-shadow),
+    0 8px 48px rgba(40, 50, 80, 0.06),
+    inset 0 0 0 1px var(--glass-border-hi);
+  background:
+    radial-gradient(ellipse at 20% 0%, var(--glass-radial-1) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, var(--glass-radial-2) 0%, transparent 55%),
+    linear-gradient(165deg, var(--glass-bg-hi) 0%, var(--glass-bg-base) 40%, var(--glass-bg-lo) 100%);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  transition: background var(--dur-slow) var(--ease-fluid),
+              box-shadow var(--dur-slow) var(--ease-fluid);
+}
+
+#app::after {
+  content: '';
+  position: absolute;
+  inset: 0.5px;
+  border-radius: var(--radius);
+  pointer-events: none;
+  z-index: 9999;
+  background: transparent;
+  box-shadow: inset 0 0.5px 1px var(--glass-edge-hi),
+              inset 0 -0.5px 1px var(--glass-edge-lo);
+  transition: box-shadow 0.6s var(--ease-fluid);
+}
+
+/* ============================================================
+   Titlebar
+   ============================================================ */
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 10px 18px;
+  -webkit-app-region: drag;
+  user-select: none;
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  -webkit-app-region: no-drag;
+}
+
+.app-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(255, 180, 0, 0.3));
+  transition: transform var(--dur-slow) var(--spring-soft);
+}
+.app-icon:hover {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.theme-toggle {
+  width: 28px; height: 28px;
+  border: none; background: transparent;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  transition: all var(--dur-fast) var(--ease-fluid);
+  -webkit-app-region: no-drag;
+  position: relative;
+  overflow: hidden;
+}
+.theme-toggle:hover {
+  background: var(--glass-surface-hover);
+  transform: scale(1.1);
+}
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+.title-input {
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  outline: none;
+  width: 130px;
+  transition: all var(--dur-fast) var(--ease-fluid);
+  -webkit-app-region: no-drag;
+  letter-spacing: 0.01em;
+}
+.title-input:hover {
+  border-color: var(--glass-border);
+  background: var(--glass-surface);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.title-input:focus {
+  border-color: var(--accent-soft);
+  background: var(--glass-input-focus);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  width: 160px;
+}
+
+.titlebar-actions {
+  display: flex;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.win-btn {
+  width: 28px; height: 28px;
+  border: none; background: transparent;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: all var(--dur-fast) var(--ease-fluid);
+  position: relative;
+  overflow: hidden;
+}
+.win-btn:hover {
+  background: var(--glass-surface-hover);
+  transform: scale(1.06);
+}
+.win-btn:active {
+  transform: scale(0.93);
+}
+.win-btn.close:hover {
+  background: var(--danger-surface);
+  color: var(--danger);
+}
+.win-btn.pinned {
+  color: var(--accent);
+  background: var(--accent-surface);
+}
+
+/* ============================================================
+   Tabs
+   ============================================================ */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  padding: 0 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.tab {
+  padding: 10px 18px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  transition: all var(--dur-fast) var(--ease-fluid);
+  user-select: none;
+  -webkit-app-region: no-drag;
+  position: relative;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.tab:hover {
+  color: var(--text-primary);
+  background: var(--glass-surface);
+}
+.tab:active {
+  transform: scale(0.96);
+}
+.tab.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  animation: tabIndicatorIn var(--dur-normal) var(--spring);
+}
+@keyframes tabIndicatorIn {
+  from { width: 0; opacity: 0; }
+  to   { width: 60%; opacity: 1; }
+}
+
+/* ============================================================
+   Panels
+   ============================================================ */
+.panels {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition:
+    opacity var(--dur-normal) var(--ease-smooth),
+    transform var(--dur-normal) var(--ease-smooth);
+}
+.panel.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.panel-content::-webkit-scrollbar { width: 4px; }
+.panel-content::-webkit-scrollbar-track { background: transparent; }
+.panel-content::-webkit-scrollbar-thumb {
+  background: var(--accent-scrollbar);
+  border-radius: 2px;
+}
+.panel-content::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-scrollbar-hover);
+}
+
+/* ============================================================
+   Tag bar
+   ============================================================ */
+.tag-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 0 14px 12px;
+  align-items: center;
+  z-index: 2;
+}
+
+.tag-chip {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-tag-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-secondary);
+  transition: all var(--dur-fast) var(--spring-soft);
+  user-select: none;
+  white-space: nowrap;
+  position: relative;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-weight: 500;
+}
+.tag-chip:hover {
+  background: var(--glass-surface-hi);
+  border-color: var(--glass-border-hi);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px var(--glass-tag-shadow);
+}
+.tag-chip:active {
+  transform: scale(0.94);
+}
+.tag-chip.sel {
+  background: var(--accent-surface);
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+  font-weight: 600;
+}
+.tag-chip .tag-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 4px currentColor;
+}
+.tag-chip .tag-edit-icon {
+  font-size: 10px; opacity: 0; cursor: pointer; padding: 2px;
+  transition: opacity var(--dur-fast);
+}
+.tag-chip:hover .tag-edit-icon { opacity: 0.6; }
+.tag-chip .tag-edit-icon:hover { opacity: 1; }
+
+.add-tag-btn {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: 1px dashed var(--glass-border);
+  background: transparent;
+  color: var(--text-tertiary);
+  transition: all var(--dur-fast) var(--ease-fluid);
+  font-weight: 500;
+}
+.add-tag-btn:hover {
+  border-color: var(--accent-soft);
+  color: var(--accent);
+  background: var(--accent-surface);
+}
+
+/* Tag drag states */
+.tag-chip.drag-over-left::before,
+.tag-chip.drag-over-right::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 2.5px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  pointer-events: none;
+  z-index: 10;
+  animation: tagInsertPulse 0.8s ease-in-out infinite;
+}
+.tag-chip.drag-over-left::before { left: -2px; }
+.tag-chip.drag-over-right::after { right: -2px; }
+@keyframes tagInsertPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.tag-chip.dragging {
+  opacity: 0.35;
+  transform: scale(0.94);
+}
+
+/* ============================================================
+   Todo Input
+   ============================================================ */
+.todo-input-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.todo-input-row input[type="text"] {
+  flex: 1 1 110px;
+  min-width: 110px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 10px;
+  font-size: 13px;
+  outline: none;
+  background: var(--glass-input);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-input);
+  transition: all var(--dur-fast) var(--ease-fluid);
+}
+.todo-input-row input[type="text"]:hover {
+  border-color: var(--glass-border-hi);
+  background: var(--glass-input-focus);
+}
+.todo-input-row input[type="text"]:focus {
+  border-color: var(--accent-soft);
+  background: var(--glass-input-focus);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  transform: scale(1.01);
+}
+
+.todo-input-row input[type="date"] {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 8px;
+  font-size: 12px;
+  outline: none;
+  background: var(--glass-input);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-input);
+  width: auto;
+  min-width: 106px;
+  max-width: 130px;
+  flex-shrink: 1;
+  font-family: inherit;
+  transition: all var(--dur-fast) var(--ease-fluid);
+}
+.todo-input-row input[type="date"]:hover {
+  border-color: var(--glass-border-hi);
+  background: var(--glass-input-focus);
+}
+.todo-input-row input[type="date"]:focus {
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn-primary {
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--spring-soft);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.25);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+  filter: brightness(1.06);
+}
+.btn-primary:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(59,130,246,0.20);
+}
+
+/* ============================================================
+   Show-completed toggle
+   ============================================================ */
+.show-completed-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-surface);
+  color: var(--text-tertiary);
+  transition: all var(--dur-fast) var(--ease-fluid);
+  font-weight: 500;
+  user-select: none;
+}
+.show-completed-toggle:hover {
+  background: var(--glass-surface-hover);
+  border-color: var(--glass-border-hi);
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   Empty hint
+   ============================================================ */
+.empty-hint {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--text-placeholder);
+  font-size: 13px;
+  animation: fadeInUp var(--dur-slow) var(--ease-smooth);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   Todo list items
+   ============================================================ */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px 7px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid transparent;
+  transition:
+    transform var(--dur-fast) var(--spring-soft),
+    background var(--dur-fast) var(--ease-fluid),
+    border-color var(--dur-fast) var(--ease-fluid),
+    box-shadow var(--dur-fast) var(--ease-fluid);
+  cursor: grab;
+  user-select: none;
+  position: relative;
+  overflow: visible;
+}
+.todo-item:hover {
+  background: var(--glass-surface-hi);
+  border-color: var(--glass-border-hi);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--glass-shadow);
+}
+.todo-item:active {
+  cursor: grabbing;
+}
+.todo-item.dragging {
+  opacity: 0.35;
+  transform: scale(0.96);
+}
+
+/* Drag insertion indicator */
+.todo-item.drag-insert-above::before,
+.todo-item.drag-insert-below::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-glow);
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.12s var(--ease-fluid), transform 0.15s var(--spring-soft);
+}
+.todo-item.drag-insert-above::before {
+  top: -2px;
+  transform: scaleY(1);
+}
+.todo-item.drag-insert-below::after {
+  bottom: -2px;
+  transform: scaleY(1);
+}
+
+/* Date group headers */
+.date-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+.date-group-header:first-child { padding-top: 2px; }
+.date-group-label {
+  color: var(--text-primary);
+}
+.date-group-label.today-label {
+  color: var(--success);
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(34,197,94,0.25);
+  letter-spacing: 0.03em;
+}
+.date-group-count {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 450;
+}
+
+/* Inline note */
+.todo-note {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all var(--dur-fast) var(--ease-fluid);
+  min-height: 18px;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+.todo-note:hover {
+  color: var(--text-secondary);
+  background: rgba(0,0,0,0.03);
+  border-color: var(--glass-border);
+}
+
+.note-placeholder {
+  font-style: italic;
+  color: var(--text-placeholder);
+}
+
+.todo-note-input {
+  width: 100%;
+  border: 1px solid var(--accent-soft);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  outline: none;
+  background: var(--glass-input-focus);
+  color: var(--text-input);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  font-family: inherit;
+}
+
+.todo-body {
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition: background var(--dur-fast) var(--ease-fluid);
+  flex: 1;
+  min-width: 0;
+}
+.todo-body:active {
+  background: var(--accent-surface);
+}
+
+.drag-handle {
+  cursor: grab;
+  color: var(--text-tertiary);
+  font-size: 15px;
+  padding: 3px;
+  flex-shrink: 0;
+  user-select: none;
+  transition: color var(--dur-fast), transform var(--dur-fast);
+  line-height: 1;
+}
+.drag-handle:hover { color: var(--text-secondary); transform: scale(1.15); }
+.drag-handle:active { cursor: grabbing; transform: scale(0.9); }
+
+/* Check circle */
+.todo-check {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--text-tertiary);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast),
+    background var(--dur-fast),
+    transform var(--dur-fast) var(--spring-firm);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.todo-check:hover {
+  border-color: var(--success);
+  transform: scale(1.15);
+}
+.todo-check:active {
+  transform: scale(0.85);
+}
+.todo-check.done {
+  background: var(--success);
+  border-color: var(--success);
+  animation: checkPop var(--dur-normal) var(--spring);
+}
+@keyframes checkPop {
+  0%   { transform: scale(0.5); }
+  50%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.todo-check.done::after {
+  content: '';
+  width: 5px; height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+  animation: checkDraw var(--dur-fast) var(--ease-fluid) both;
+}
+@keyframes checkDraw {
+  from { opacity: 0; transform: rotate(45deg) scale(0); }
+  to   { opacity: 1; transform: rotate(45deg) scale(1); }
+}
+
+.todo-text {
+  font-size: 13px;
+  color: var(--text-primary);
+  word-break: break-word;
+  line-height: 1.45;
+}
+.todo-text.done {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
+  text-decoration-color: var(--text-done);
+}
+.todo-text b, .todo-text strong {
+  font-weight: 700;
+  color: var(--text-bold);
+}
+
+.todo-date {
+  font-size: 11px;
+  color: var(--accent);
+  margin-top: 3px;
+  display: flex; align-items: center; gap: 3px;
+  font-weight: 500;
+}
+.todo-date.overdue {
+  color: var(--danger);
+  animation: overduePulse 2s ease-in-out infinite;
+}
+@keyframes overduePulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+/* Inline date edit on todo items */
+.todo-date-inline {
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all var(--dur-fast) var(--ease-fluid);
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 3px;
+  user-select: none;
+}
+.todo-date-inline:hover {
+  color: var(--accent);
+  background: var(--accent-surface);
+  border-color: var(--accent-soft);
+}
+.todo-date-inline.overdue {
+  color: var(--danger);
+}
+.todo-date-inline input[type="date"] {
+  border: 1px solid var(--accent-soft);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 10.5px;
+  outline: none;
+  background: var(--glass-input-focus);
+  color: var(--text-input);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+  width: 115px;
+  font-family: inherit;
+}
+
+.todo-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.todo-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transform: translateX(4px);
+  transition:
+    opacity var(--dur-fast) var(--ease-fluid),
+    transform var(--dur-fast) var(--ease-fluid);
+}
+.todo-item:hover .todo-actions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.todo-act-btn {
+  width: 26px; height: 26px;
+  border: none; background: transparent;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--dur-fast) var(--ease-fluid);
+}
+.todo-act-btn:hover {
+  background: rgba(0,0,0,0.05);
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+.todo-act-btn:active {
+  transform: scale(0.85);
+}
+.todo-act-btn.del:hover {
+  background: var(--danger-surface);
+  color: var(--danger);
+}
+
+/* ============================================================
+   Memo
+   ============================================================ */
+.memo-area {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-memo);
+  background: transparent;
+  padding: 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Microsoft YaHei", sans-serif;
+  transition: background var(--dur-slow) var(--ease-fluid);
+}
+.memo-area:focus {
+  background: var(--glass-surface);
+}
+.memo-area::placeholder {
+  color: var(--text-placeholder);
+}
+
+.memo-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 18px;
+  border-top: 1px solid var(--glass-border);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.memo-footer button {
+  border: none; background: transparent;
+  color: var(--text-secondary); cursor: pointer;
+  font-size: 12px; padding: 5px 10px; border-radius: var(--radius-xs);
+  transition: all var(--dur-fast) var(--ease-fluid);
+  font-weight: 500;
+}
+.memo-footer button:hover {
+  background: rgba(0,0,0,0.04);
+  color: var(--text-primary);
+}
+.memo-footer button:active {
+  transform: scale(0.94);
+}
+
+/* ============================================================
+   Calendar
+   ============================================================ */
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0 10px;
+}
+
+.cal-nav {
+  width: 32px; height: 32px;
+  border: none;
+  background: var(--glass-calendar-day);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-primary);
+  transition: all var(--dur-fast) var(--spring-soft);
+  border: 1px solid var(--glass-border);
+}
+.cal-nav:hover {
+  background: var(--glass-calendar-day-hover);
+  transform: scale(1.08);
+  box-shadow: 0 2px 10px var(--glass-shadow);
+}
+.cal-nav:active {
+  transform: scale(0.90);
+}
+
+.cal-month-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  padding: 0 0 8px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: var(--radius-xs);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--text-primary);
+  position: relative;
+  transition: all var(--dur-fast) var(--spring-soft);
+  font-weight: 400;
+}
+.cal-day:hover {
+  background: var(--glass-calendar-day-hover);
+  transform: scale(1.12);
+  box-shadow: 0 2px 8px var(--glass-shadow);
+}
+.cal-day:active {
+  transform: scale(0.92);
+}
+.cal-day.today {
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-surface);
+}
+.cal-day.other-month {
+  color: var(--text-placeholder);
+  opacity: 0.45;
+}
+.cal-day.selected {
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 4px 14px var(--accent-glow);
+  animation: calDaySelect var(--dur-normal) var(--spring);
+}
+@keyframes calDaySelect {
+  0%   { transform: scale(0.7); }
+  60%  { transform: scale(1.10); }
+  100% { transform: scale(1); }
+}
+.cal-day.selected.other-month { color: rgba(255,255,255,0.55); }
+
+.cal-dot-row {
+  display: flex;
+  gap: 2.5px;
+  position: absolute;
+  bottom: 5px;
+}
+.cal-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 3px var(--accent-glow);
+}
+.cal-dot.done {
+  background: var(--success);
+  box-shadow: 0 0 3px rgba(34,197,94,0.3);
+}
+
+.cal-day-detail {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-cal-detail);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-height: 64px;
+  border: 1px solid var(--glass-border);
+  transition: all var(--dur-normal) var(--ease-fluid);
+}
+.cal-day-detail h4 {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+.cal-day-detail .empty-day {
+  color: var(--text-placeholder);
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+  display: block;
+}
+
+.cal-day-todo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 13px;
+  color: var(--text-primary);
+  animation: slideIn var(--dur-normal) var(--ease-fluid) both;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.cal-day-todo .dot-status {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+}
+.cal-day-todo .dot-status.completed { background: var(--success); box-shadow: 0 0 4px rgba(34,197,94,0.3); }
+.cal-day-todo .dot-status.pending   { background: var(--accent); box-shadow: 0 0 4px var(--accent-glow); }
+.cal-day-todo .dot-status.overdue   { background: var(--danger); box-shadow: 0 0 4px rgba(239,68,68,0.3); }
+.cal-day-todo .todo-name { flex: 1; }
+.cal-day-todo .todo-name.done-line {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   Context menu & dialog
+   ============================================================ */
+.context-menu {
+  position: fixed;
+  background: var(--glass-context);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    0 8px 32px var(--glass-shadow),
+    0 2px 8px rgba(40,50,80,0.08),
+    inset 0 0 0 1px var(--glass-border-hi);
+  padding: 5px;
+  z-index: 1000;
+  display: none;
+  min-width: 130px;
+  animation: menuIn var(--dur-fast) var(--spring) both;
+  transform-origin: top left;
+}
+@keyframes menuIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.context-menu.visible { display: block; }
+
+.context-menu-item {
+  padding: 7px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 6px;
+  color: var(--text-primary);
+  transition: all var(--dur-fast) var(--ease-fluid);
+  font-weight: 450;
+}
+.context-menu-item:hover {
+  background: var(--accent-surface);
+  color: var(--accent);
+}
+
+.edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--glass-overlay);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.edit-overlay.visible { display: flex; }
+
+.edit-dialog {
+  background: var(--glass-dialog);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 290px;
+  box-shadow:
+    0 16px 48px var(--glass-shadow),
+    inset 0 0 0 1px var(--glass-border-hi);
+  animation: dialogIn var(--dur-normal) var(--spring) both;
+}
+@keyframes dialogIn {
+  from { opacity: 0; transform: scale(0.90) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.edit-dialog h3 { font-size: 16px; margin-bottom: 16px; font-weight: 650; letter-spacing: 0.02em; }
+.edit-dialog input {
+  width: 100%;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  outline: none;
+  background: var(--glass-input);
+  color: var(--text-input);
+  transition: all var(--dur-fast) var(--ease-fluid);
+}
+.edit-dialog input:focus {
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+.edit-dialog-btns { display: flex; gap: 10px; justify-content: flex-end; }
+.edit-dialog-btns button {
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all var(--dur-fast) var(--spring-soft);
+  font-weight: 550;
+}
+.edit-dialog-btns button:hover { transform: translateY(-1px); }
+.edit-dialog-btns button:active { transform: scale(0.94); }
+.edit-dialog-btns .btn-cancel {
+  background: rgba(0,0,0,0.06);
+  color: var(--text-secondary);
+}
+.edit-dialog-btns .btn-cancel:hover { background: rgba(0,0,0,0.10); }
+.edit-dialog-btns .btn-ok {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  box-shadow: 0 2px 8px rgba(59,130,246,0.25);
+}
+.edit-dialog-btns .btn-ok:hover { box-shadow: 0 4px 16px rgba(59,130,246,0.35); }
+
+/* ============================================================
+   Ripple effect
+   ============================================================ */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--glass-ripple);
+  transform: scale(0);
+  animation: rippleAnim 0.55s var(--ease-fluid) forwards;
+  pointer-events: none;
+}
+@keyframes rippleAnim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ============================================================
+   Magnetic hover scale
+   ============================================================ */
+.magnetic {
+  transition: transform var(--dur-fast) var(--spring-soft);
+}
+.magnetic:hover {
+  transform: scale(1.04);
+}
+
+/* ============================================================
+   Theme toggle icon animation
+   ============================================================ */
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position: absolute;
+  transition: transform 0.35s var(--spring), opacity 0.25s var(--ease-fluid);
+}
+.theme-toggle .icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+.theme-toggle .icon-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+[data-theme="dark"] .theme-toggle .icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="noise-overlay"></div>
+
+  <!-- Titlebar -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <svg class="app-icon" width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="2.5" width="20" height="17" rx="3" fill="#FFD54F" stroke="#E6B800" stroke-width="1.2"/>
+        <rect x="5.5" y="0.5" width="11" height="4" rx="1.5" fill="#FFAB00"/>
+      </svg>
+      <input class="title-input" id="titleInput" value="Todo Today" maxlength="20" spellcheck="false">
+    </div>
+    <div class="titlebar-actions">
+      <button class="theme-toggle" id="btnTheme" title="切换主题"></button>
+      <button class="win-btn" id="btnPin" onclick="togglePin()" title="置顶">📌</button>
+      <button class="win-btn" onclick="minimize()" title="最小化">—</button>
+      <button class="win-btn close" onclick="closeApp()" title="关闭">✕</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" data-panel="todo" onclick="switchPanel('todo')">待办</div>
+    <div class="tab" data-panel="memo" onclick="switchPanel('memo')">备忘录</div>
+    <div class="tab" data-panel="calendar" onclick="switchPanel('calendar')">日历</div>
+  </div>
+
+  <!-- Panels -->
+  <div class="panels">
+    <!-- Todo Panel -->
+    <div class="panel active" id="panel-todo">
+      <div class="tag-bar" id="tagBar"></div>
+      <div class="panel-content" style="padding-top:0">
+        <div class="todo-input-row">
+          <input type="text" id="todoInput" placeholder="添加待办… 用 **文字** 加粗重点" onkeydown="if(event.key==='Enter')addTodo()">
+          <input type="date" id="todoDate">
+          <button class="btn-primary magnetic" onclick="addTodo()">添加</button>
+        </div>
+        <div class="todo-list" id="todoList"></div>
+        <div class="empty-hint" id="todoEmpty">✨ 暂无待办，添加一条吧</div>
+      </div>
+    </div>
+
+    <!-- Memo Panel -->
+    <div class="panel" id="panel-memo">
+      <textarea class="memo-area" id="memoArea" placeholder="随手记点什么…"></textarea>
+      <div class="memo-footer">
+        <span id="memoCount">0 字</span>
+        <button onclick="clearMemo()">清空</button>
+      </div>
+    </div>
+
+    <!-- Calendar Panel -->
+    <div class="panel" id="panel-calendar">
+      <div class="panel-content">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="changeMonth(-1)">◀</button>
+          <span class="cal-month-label" id="calMonthLabel"></span>
+          <button class="cal-nav" onclick="changeMonth(1)">▶</button>
+        </div>
+        <div class="cal-weekdays">
+          <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-day-detail" id="calDayDetail">
+          <span class="empty-day">点击日期查看待办</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Context Menu -->
+<div class="context-menu" id="contextMenu">
+  <div class="context-menu-item" onclick="editTagFromMenu()">✏️ 重命名标签</div>
+  <div class="context-menu-item" onclick="deleteTagFromMenu()" style="color:var(--danger)">🗑 删除标签</div>
+</div>
+
+<!-- Edit Dialog -->
+<div class="edit-overlay" id="editOverlay">
+  <div class="edit-dialog">
+    <h3 id="editDialogTitle">重命名</h3>
+    <input type="text" id="editDialogInput" maxlength="20">
+    <div class="edit-dialog-btns">
+      <button class="btn-cancel" onclick="closeDialog()">取消</button>
+      <button class="btn-ok" onclick="confirmDialog()">确定</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   State & Core Logic
+   ============================================================ */
+let state = {
+  title: 'Todo Today',
+  todos: [],
+  tags: [
+    { name: '工作', color: '#378ADD' },
+    { name: '个人', color: '#639922' },
+    { name: '重要', color: '#D85A30' }
+  ],
+  memo: '',
+  nextId: 1,
+  pinned: false,
+  activePanel: 'todo',
+  activeTag: '全部',
+  calYear: new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
+  selectedCalDate: null,
+  editTarget: null,
+  dragSrcIndex: null,
+  showCompleted: true,
+  theme: 'light'
+};
+
+const TAG_COLORS = [
+  '#378ADD', // Blue
+  '#639922', // Green
+  '#D85A30', // Rust
+  '#8E44AD', // Purple
+  '#E67E22', // Orange
+  '#1ABC9C', // Teal
+  '#EF4444', // Red
+  '#F59E0B', // Amber
+  '#06B6D4', // Cyan
+  '#10B981', // Emerald
+  '#F472B6', // Pink
+  '#6366F1', // Indigo
+  '#84CC16', // Lime
+  '#EC4899', // Magenta
+  '#14B8A6', // Turquoise
+  '#A855F7', // Violet
+  '#FB923C', // Tangerine
+  '#22D3EE', // Sky
+];
+
+/* ---- Init ---- */
+async function init() {
+  if (window.stickyAPI) {
+    const data = await window.stickyAPI.getAll();
+    state.title = data.title || 'Todo Today';
+    state.todos = data.todos || [];
+    state.tags = data.tags || state.tags;
+    state.memo = data.memo || '';
+    state.nextId = data.nextId || 1;
+    if (data.theme) state.theme = data.theme;
+  }
+  applyTheme(state.theme);
+  document.getElementById('titleInput').value = state.title;
+  document.getElementById('memoArea').value = state.memo;
+  const today = new Date();
+  document.getElementById('todoDate').value = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  updateMemoCount();
+  renderTags();
+  renderTodos();
+  renderCalendar();
+}
+
+/* ---- Theme ---- */
+function applyTheme(theme) {
+  state.theme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  const btn = document.getElementById('btnTheme');
+  if (btn) {
+    btn.innerHTML = theme === 'dark'
+      ? '<span class="icon-moon">🌙</span><span class="icon-sun">☀️</span>'
+      : '<span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>';
+  }
+  save();
+}
+
+function toggleTheme() {
+  applyTheme(state.theme === 'light' ? 'dark' : 'light');
+}
+
+/* ---- Panel switching ---- */
+function switchPanel(name) {
+  state.activePanel = name;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.panel === name));
+  ['todo','memo','calendar'].forEach(p => {
+    const panel = document.getElementById('panel-' + p);
+    panel.classList.toggle('active', p === name);
+  });
+  if (name === 'calendar') renderCalendar();
+}
+
+/* ---- Persist ---- */
+async function save() {
+  if (window.stickyAPI) {
+    await window.stickyAPI.saveAll({
+      title: state.title,
+      todos: state.todos,
+      tags: state.tags,
+      memo: state.memo,
+      nextId: state.nextId,
+      theme: state.theme
+    });
+  }
+}
+
+/* ---- Helpers ---- */
+function genId() { return state.nextId++; }
+
+function formatDate(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T00:00:00');
+  return (dt.getMonth() + 1) + '月' + dt.getDate() + '日';
+}
+
+function isOverdue(dateStr) {
+  if (!dateStr) return false;
+  const today = new Date(); today.setHours(0,0,0,0);
+  return new Date(dateStr + 'T00:00:00').getTime() < today.getTime();
+}
+
+function parseBold(text) {
+  if (!text) return '';
+  return text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ============================================================
+   Ripple effect
+   ============================================================ */
+function createRipple(e) {
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+  el.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove());
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.btn-primary, .win-btn, .tag-chip, .add-tag-btn, .cal-nav').forEach(el => {
+    el.addEventListener('pointerdown', createRipple);
+  });
+});
+
+/* ============================================================
+   Tags
+   ============================================================ */
+function renderTags() {
+  const bar = document.getElementById('tagBar');
+  const allSel = state.activeTag === '全部';
+  let html = `<span class="tag-chip${allSel?' sel':''} magnetic" onclick="setTag('全部')">全部</span>`;
+  state.tags.forEach((tag, i) => {
+    const sel = state.activeTag === tag.name ? ' sel' : '';
+    const selStyle = sel
+      ? ` style="color:${tag.color}; background:${tag.color}18; border-color:${tag.color}40; box-shadow:0 0 0 2px ${tag.color}30"`
+      : '';
+    html += `<span class="tag-chip${sel} magnetic" draggable="true"
+      ${selStyle}
+      onclick="setTag('${escHtml(tag.name)}')"
+      oncontextmenu="tagContextMenu(event,'${escHtml(tag.name)}')"
+      ondragstart="tagDragStart(event,'${escHtml(tag.name)}')"
+      ondragover="tagDragOver(event)"
+      ondragleave="tagDragLeave(event)"
+      ondrop="tagDrop(event,'${escHtml(tag.name)}')"
+      ondragend="tagDragEnd(event)">` +
+      `<span class="tag-dot" style="background:${tag.color}"></span>` +
+      `${escHtml(tag.name)}` +
+      `<span class="tag-edit-icon" onclick="event.stopPropagation();editTag('${escHtml(tag.name)}')" title="重命名">✎</span>` +
+      `</span>`;
+  });
+  html += '<button class="add-tag-btn magnetic" onclick="addNewTag()">＋ 新标签</button>';
+  const eyeIcon = state.showCompleted ? '👁️' : '🙈';
+  const toggleClass = state.showCompleted ? 'show-completed-toggle' : 'show-completed-toggle hide-completed';
+  html += `<span class="${toggleClass}" onclick="toggleShowCompleted()" title="显示/隐藏已完成"><span class="eye-icon">${eyeIcon}</span> 已完成</span>`;
+  bar.innerHTML = html;
+}
+
+function setTag(name) {
+  state.activeTag = name;
+  document.getElementById('contextMenu').classList.remove('visible');
+  renderTags();
+  renderTodos();
+}
+
+/* ---- Tag drag & drop ---- */
+let tagDragName = null;
+
+function tagDragStart(e, tagName) {
+  tagDragName = tagName;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', tagName);
+  setTimeout(() => e.currentTarget.classList.add('dragging'), 0);
+}
+
+function tagDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.tag-chip').forEach(el =>
+    el.classList.remove('drag-over-left', 'drag-over-right')
+  );
+  const rect = e.currentTarget.getBoundingClientRect();
+  if (e.clientX < rect.left + rect.width / 2) {
+    e.currentTarget.classList.add('drag-over-left');
+  } else {
+    e.currentTarget.classList.add('drag-over-right');
+  }
+}
+
+function tagDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over-left', 'drag-over-right');
+}
+
+function tagDrop(e, targetName) {
+  e.preventDefault();
+  document.querySelectorAll('.tag-chip').forEach(el =>
+    el.classList.remove('drag-over-left', 'drag-over-right')
+  );
+  if (!tagDragName || tagDragName === targetName) return;
+  const srcIdx = state.tags.findIndex(t => t.name === tagDragName);
+  let tgtIdx = state.tags.findIndex(t => t.name === targetName);
+  if (srcIdx < 0 || tgtIdx < 0) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  if (e.clientX > rect.left + rect.width / 2) tgtIdx++;
+  const [moved] = state.tags.splice(srcIdx, 1);
+  if (srcIdx < tgtIdx) tgtIdx--;
+  state.tags.splice(tgtIdx, 0, moved);
+  save(); renderTags();
+}
+
+function tagDragEnd(e) {
+  tagDragName = null;
+  document.querySelectorAll('.tag-chip').forEach(el =>
+    el.classList.remove('dragging', 'drag-over-left', 'drag-over-right')
+  );
+}
+
+function toggleShowCompleted() {
+  state.showCompleted = !state.showCompleted;
+  renderTags();
+  renderTodos();
+}
+
+function tagContextMenu(e, tagName) {
+  e.preventDefault();
+  state.editTarget = tagName;
+  const menu = document.getElementById('contextMenu');
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = e.clientY + 'px';
+  menu.classList.add('visible');
+}
+
+document.addEventListener('click', () => {
+  document.getElementById('contextMenu').classList.remove('visible');
+});
+
+function editTag(name) {
+  state.editTarget = name;
+  document.getElementById('editDialogTitle').textContent = '重命名标签';
+  document.getElementById('editDialogInput').value = name;
+  document.getElementById('editOverlay').classList.add('visible');
+  const inp = document.getElementById('editDialogInput');
+  inp.focus(); inp.select();
+}
+
+function editTagFromMenu() {
+  if (state.editTarget) editTag(state.editTarget);
+}
+
+function deleteTagFromMenu() {
+  if (state.editTarget) {
+    state.tags = state.tags.filter(t => t.name !== state.editTarget);
+    if (state.activeTag === state.editTarget) state.activeTag = '全部';
+    state.editTarget = null;
+    save(); renderTags(); renderTodos();
+  }
+}
+
+function addNewTag() {
+  state.editTarget = null;
+  document.getElementById('editDialogTitle').textContent = '新建标签';
+  document.getElementById('editDialogInput').value = '';
+  document.getElementById('editOverlay').classList.add('visible');
+  document.getElementById('editDialogInput').focus();
+}
+
+function confirmDialog() {
+  const val = document.getElementById('editDialogInput').value.trim();
+  if (!val) { closeDialog(); return; }
+  if (state.editTarget) {
+    const tag = state.tags.find(t => t.name === state.editTarget);
+    if (tag) {
+      if (state.activeTag === tag.name) state.activeTag = val;
+      tag.name = val;
+    }
+  } else {
+    if (state.tags.find(t => t.name === val)) { closeDialog(); return; }
+    state.tags.push({ name: val, color: TAG_COLORS[state.tags.length % TAG_COLORS.length] });
+  }
+  closeDialog();
+  save(); renderTags(); renderTodos();
+}
+
+function closeDialog() {
+  document.getElementById('editOverlay').classList.remove('visible');
+  state.editTarget = null;
+}
+
+document.getElementById('editOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDialog();
+});
+document.getElementById('editDialogInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') confirmDialog();
+  if (e.key === 'Escape') closeDialog();
+});
+
+/* ---- Title ---- */
+document.getElementById('titleInput').addEventListener('input', function() {
+  state.title = this.value.trim() || 'Todo Today';
+  save();
+});
+document.getElementById('titleInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') this.blur();
+});
+
+/* ---- Theme toggle button ---- */
+document.getElementById('btnTheme').addEventListener('click', toggleTheme);
+
+/* ---- Memo ---- */
+document.getElementById('memoArea').addEventListener('input', function() {
+  state.memo = this.value;
+  updateMemoCount();
+  save();
+});
+
+function updateMemoCount() {
+  document.getElementById('memoCount').textContent =
+    document.getElementById('memoArea').value.length + ' 字';
+}
+
+function clearMemo() {
+  document.getElementById('memoArea').value = '';
+  state.memo = '';
+  updateMemoCount();
+  save();
+}
+
+/* ============================================================
+   Todos
+   ============================================================ */
+function addTodo() {
+  const inp = document.getElementById('todoInput');
+  const dateInp = document.getElementById('todoDate');
+  const text = inp.value.trim();
+  if (!text) return;
+  const tag = state.activeTag === '全部'
+    ? (state.tags[0] ? state.tags[0].name : '')
+    : state.activeTag;
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  state.todos.push({
+    id: genId(),
+    text: text,
+    date: dateInp.value || todayStr,
+    done: false,
+    tag: tag,
+    memo: '',
+    order: state.todos.length
+  });
+  inp.value = '';
+  dateInp.value = todayStr;
+  save();
+  renderTodos();
+}
+
+function toggleTodo(id) {
+  const t = state.todos.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  const item = document.getElementById('ti' + id);
+  if (item) {
+    const check = item.querySelector('.todo-check');
+    const text = item.querySelector('.todo-text');
+    const dateEl = item.querySelector('.todo-date-inline');
+    if (check) {
+      check.classList.remove('done');
+      void check.offsetWidth;
+      if (t.done) check.classList.add('done');
+    }
+    if (text) {
+      text.classList.toggle('done', t.done);
+    }
+    if (dateEl && t.date) {
+      if (t.done) dateEl.classList.remove('overdue');
+      else if (isOverdue(t.date)) dateEl.classList.add('overdue');
+    }
+  }
+  save();
+  if (state.activePanel === 'calendar') renderCalendar();
+}
+
+function deleteTodo(id) {
+  const el = document.getElementById('ti' + id);
+  if (el) {
+    el.style.transition = 'all 0.2s cubic-bezier(0.4,0,0.2,1)';
+    el.style.transform = 'scale(0.85)';
+    el.style.opacity = '0';
+    setTimeout(() => {
+      state.todos = state.todos.filter(x => x.id !== id);
+      save();
+      renderTodos(false);
+    }, 200);
+  } else {
+    state.todos = state.todos.filter(x => x.id !== id);
+    save();
+    renderTodos(false);
+  }
+}
+
+function renderTodos(animate = true) {
+  const list = document.getElementById('todoList');
+  const empty = document.getElementById('todoEmpty');
+  let filtered = state.todos;
+  if (state.activeTag !== '全部') {
+    filtered = filtered.filter(t => t.tag === state.activeTag);
+  }
+  if (!state.showCompleted) {
+    filtered = filtered.filter(t => !t.done);
+  }
+  filtered = [...filtered].sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  if (filtered.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+
+  const groups = new Map();
+  filtered.forEach(t => {
+    const key = t.date || '__none__';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(t);
+  });
+
+  const groupKeys = [...groups.keys()].sort((a, b) => {
+    if (a === '__none__') return 1;
+    if (b === '__none__') return -1;
+    if (a === todayStr) return -1;
+    if (b === todayStr) return 1;
+    return a.localeCompare(b);
+  });
+
+  let html = '';
+  let globalIdx = 0;
+
+  groupKeys.forEach(key => {
+    const groupTodos = groups.get(key);
+    groupTodos.sort((a, b) => {
+      if (a.done === b.done) return (a.order || 0) - (b.order || 0);
+      return a.done ? 1 : -1;
+    });
+
+    if (key !== '__none__') {
+      const isToday = key === todayStr;
+      const labelText = isToday ? '今天' : formatDate(key);
+      html += `<div class="date-group-header">
+        <span class="date-group-label${isToday ? ' today-label' : ''}">${labelText}</span>
+        <span class="date-group-count">${groupTodos.length} 项</span>
+      </div>`;
+    } else {
+      html += `<div class="date-group-header">
+        <span class="date-group-label">未设定日期</span>
+        <span class="date-group-count">${groupTodos.length} 项</span>
+      </div>`;
+    }
+
+    groupTodos.forEach(t => {
+      const tagObj = state.tags.find(tg => tg.name === t.tag);
+      const tagColor = tagObj ? tagObj.color : '#999';
+      const delay = animate ? (globalIdx++ * 0.015).toFixed(3) : '0';
+      const animStyle = animate
+        ? `style="animation: slideIn ${0.18 + parseFloat(delay)}s cubic-bezier(0.4,0,0.2,1) both;"`
+        : 'style="animation: none;"';
+      const noteHTML = t.memo
+        ? `<div class="todo-note" id="tn${t.id}" onclick="event.stopPropagation(); editTodoNote(event, ${t.id})">${escHtml(t.memo)}</div>`
+        : '';
+      const dateDisplay = t.date
+        ? `<span class="todo-date-inline${isOverdue(t.date) && !t.done ? ' overdue' : ''}" onclick="event.stopPropagation(); editTodoDate(event, ${t.id})" title="点击修改日期">📅 ${formatDate(t.date)}</span>`
+        : '';
+      html += `<div class="todo-item magnetic" draggable="true" id="ti${t.id}" ${animStyle}
+        ondragstart="dragStart(event,${t.id})"
+        ondragover="dragOver(event)"
+        ondragleave="dragLeave(event)"
+        ondrop="drop(event,${t.id})"
+        ondragend="dragEnd(event)">
+        <span class="drag-handle" title="拖拽排序">☰</span>
+        <div class="todo-check${t.done?' done':''}" onclick="toggleTodo(${t.id})"></div>
+        <div class="todo-body" onclick="event.stopPropagation(); openNoteInput(event, ${t.id})">
+          <div class="todo-text${t.done?' done':''}">${parseBold(escHtml(t.text))}</div>
+          ${noteHTML}
+        </div>
+        ${dateDisplay}
+        ${tagObj ? `<span class="todo-tag" style="background:${tagColor}">${escHtml(tagObj.name)}</span>` : ''}
+        <div class="todo-actions">
+          <button class="todo-act-btn del" onclick="deleteTodo(${t.id})" title="删除">✕</button>
+        </div>
+      </div>`;
+    });
+  });
+
+  list.innerHTML = html;
+}
+
+/* ---- Inline note editing ---- */
+function openNoteInput(e, id) {
+  if (e.target.tagName === 'INPUT') return;
+  const t = state.todos.find(x => x.id === id);
+  if (!t) return;
+  const item = document.getElementById('ti' + id);
+  if (!item) return;
+  const body = item.querySelector('.todo-body');
+  if (!body) return;
+
+  let noteEl = document.getElementById('tn' + id);
+  if (noteEl && noteEl.querySelector('input')) return;
+
+  if (!noteEl) {
+    noteEl = document.createElement('div');
+    noteEl.className = 'todo-note';
+    noteEl.id = 'tn' + id;
+    body.appendChild(noteEl);
+  }
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'todo-note-input';
+  input.value = t.memo || '';
+  input.placeholder = '添加备注…';
+  input.addEventListener('blur', () => {
+    t.memo = input.value.trim();
+    if (t.memo) {
+      noteEl.innerHTML = escHtml(t.memo);
+    } else {
+      noteEl.remove();
+    }
+    save();
+  });
+  input.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') input.blur();
+    if (ev.key === 'Escape') { input.value = t.memo || ''; input.blur(); }
+  });
+  noteEl.innerHTML = '';
+  noteEl.appendChild(input);
+  input.focus();
+  input.select();
+}
+
+function editTodoNote(e, id) {
+  openNoteInput(e, id);
+}
+
+/* ---- Inline date editing ---- */
+function editTodoDate(e, id) {
+  e.stopPropagation();
+  const t = state.todos.find(x => x.id === id);
+  if (!t) return;
+  const item = document.getElementById('ti' + id);
+  if (!item) return;
+
+  // Find the date span element inside this todo item
+  const dateSpan = item.querySelector('.todo-date-inline');
+  if (!dateSpan || dateSpan.querySelector('input')) return;
+
+  const input = document.createElement('input');
+  input.type = 'date';
+  input.value = t.date || '';
+  input.addEventListener('blur', () => {
+    const newDate = input.value;
+    if (newDate !== t.date) {
+      t.date = newDate;
+      save();
+      renderTodos(false);
+    } else {
+      // No change, just restore display
+      dateSpan.innerHTML = t.date ? `📅 ${formatDate(t.date)}` : '';
+      if (isOverdue(t.date) && !t.done) dateSpan.classList.add('overdue');
+      else dateSpan.classList.remove('overdue');
+    }
+  });
+  input.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') input.blur();
+    if (ev.key === 'Escape') { input.blur(); }
+  });
+  input.addEventListener('change', () => input.blur());
+
+  dateSpan.innerHTML = '';
+  dateSpan.appendChild(input);
+  input.focus();
+  input.showPicker ? input.showPicker() : null;
+}
+
+/* ---- Drag & Drop ---- */
+function dragStart(e, id) {
+  state.dragSrcIndex = state.todos.findIndex(t => t.id === id);
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', id);
+  setTimeout(() => {
+    const el = document.getElementById('ti'+id);
+    if (el) el.classList.add('dragging');
+  }, 0);
+}
+
+function dragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.todo-item').forEach(el =>
+    el.classList.remove('drag-insert-above', 'drag-insert-below')
+  );
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  if (e.clientY < rect.top + rect.height / 2) {
+    el.classList.add('drag-insert-above');
+  } else {
+    el.classList.add('drag-insert-below');
+  }
+}
+
+function dragLeave(e) {
+  e.currentTarget.classList.remove('drag-insert-above', 'drag-insert-below');
+}
+
+function drop(e, targetId) {
+  e.preventDefault();
+  clearAllDragIndicators();
+  const srcId = parseInt(e.dataTransfer.getData('text/plain'));
+  if (srcId === targetId) return;
+
+  const srcIdx = state.todos.findIndex(t => t.id === srcId);
+  let tgtIdx = state.todos.findIndex(t => t.id === targetId);
+  if (srcIdx < 0 || tgtIdx < 0) return;
+
+  const targetEl = document.getElementById('ti' + targetId);
+  if (targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    if (e.clientY > midY) tgtIdx++;
+  }
+
+  const [moved] = state.todos.splice(srcIdx, 1);
+  if (srcIdx < tgtIdx) tgtIdx--;
+  state.todos.splice(tgtIdx, 0, moved);
+  state.todos.forEach((t, i) => { t.order = i; });
+  save();
+  renderTodos(false);
+}
+
+function dragEnd(e) {
+  document.querySelectorAll('.todo-item').forEach(el => {
+    el.classList.remove('dragging', 'drag-insert-above', 'drag-insert-below');
+  });
+}
+
+function clearAllDragIndicators() {
+  document.querySelectorAll('.todo-item').forEach(el =>
+    el.classList.remove('drag-insert-above', 'drag-insert-below')
+  );
+}
+
+/* ============================================================
+   Calendar
+   ============================================================ */
+function renderCalendar() {
+  const grid = document.getElementById('calGrid');
+  const label = document.getElementById('calMonthLabel');
+  const detail = document.getElementById('calDayDetail');
+  const y = state.calYear, m = state.calMonth;
+
+  label.textContent = y + '年 ' + (m + 1) + '月';
+
+  const todoByDate = {};
+  state.todos.forEach(t => {
+    if (t.date) {
+      if (!todoByDate[t.date]) todoByDate[t.date] = [];
+      todoByDate[t.date].push(t);
+    }
+  });
+
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const prevDays = new Date(y, m, 0).getDate();
+
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' +
+    String(today.getMonth()+1).padStart(2,'0') + '-' +
+    String(today.getDate()).padStart(2,'0');
+
+  let html = '';
+
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const day = prevDays - i;
+    const prevM = m === 0 ? 11 : m - 1;
+    const prevY = m === 0 ? y - 1 : y;
+    const dateStr = prevY + '-' + String(prevM + 1).padStart(2,'0') + '-' + String(day).padStart(2,'0');
+    const hasTodo = todoByDate[dateStr];
+    html += `<div class="cal-day other-month" data-date="${dateStr}" onclick="selectCalDate('${dateStr}')">${day}${dotsHTML(hasTodo)}</div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = y + '-' + String(m+1).padStart(2,'0') + '-' + String(day).padStart(2,'0');
+    const hasTodo = todoByDate[dateStr];
+    const isToday = dateStr === todayStr;
+    const isSel = state.selectedCalDate === dateStr;
+    html += `<div class="cal-day${isToday?' today':''}${isSel?' selected':''}" data-date="${dateStr}" onclick="selectCalDate('${dateStr}')">${day}${dotsHTML(hasTodo)}</div>`;
+  }
+
+  const remaining = 42 - (firstDay + daysInMonth);
+  for (let day = 1; day <= remaining; day++) {
+    const nextM = m === 11 ? 0 : m + 1;
+    const nextY = m === 11 ? y + 1 : y;
+    const dateStr = nextY + '-' + String(nextM + 1).padStart(2,'0') + '-' + String(day).padStart(2,'0');
+    html += `<div class="cal-day other-month" data-date="${dateStr}" onclick="selectCalDate('${dateStr}')">${day}</div>`;
+  }
+
+  grid.innerHTML = html;
+
+  if (state.selectedCalDate && todoByDate[state.selectedCalDate]) {
+    const dayTodos = todoByDate[state.selectedCalDate];
+    detail.innerHTML = '<h4>' + formatDate(state.selectedCalDate) + ' 的待办</h4>' +
+      dayTodos.map(t => {
+        let cls = t.done ? 'completed' : (isOverdue(t.date) ? 'overdue' : 'pending');
+        return `<div class="cal-day-todo" style="animation-delay:${dayTodos.indexOf(t)*0.04}s">
+          <span class="dot-status ${cls}"></span>
+          <span class="todo-name${t.done?' done-line':''}">${escHtml(t.text)}</span>
+          ${t.done ? '<span style="font-size:11px;color:var(--success);font-weight:500;">已完成</span>' : ''}
+        </div>`;
+      }).join('');
+  } else if (state.selectedCalDate) {
+    detail.innerHTML = '<span class="empty-day">该日期暂无待办</span>';
+  } else {
+    detail.innerHTML = '<span class="empty-day">点击日期查看待办</span>';
+  }
+}
+
+function dotsHTML(hasTodo) {
+  if (!hasTodo || hasTodo.length === 0) return '';
+  const allDone = hasTodo.every(t => t.done);
+  const someDone = hasTodo.some(t => t.done);
+  let dots = '';
+  if (allDone) dots = '<span class="cal-dot done"></span>';
+  else if (someDone) dots = '<span class="cal-dot done"></span><span class="cal-dot"></span>';
+  else dots = '<span class="cal-dot"></span>';
+  return `<div class="cal-dot-row">${dots}</div>`;
+}
+
+function selectCalDate(dateStr) {
+  state.selectedCalDate = dateStr;
+  renderCalendar();
+}
+
+function changeMonth(delta) {
+  state.calMonth += delta;
+  if (state.calMonth > 11) { state.calMonth = 0; state.calYear++; }
+  if (state.calMonth < 0) { state.calMonth = 11; state.calYear--; }
+  state.selectedCalDate = null;
+  renderCalendar();
+}
+
+/* ---- Window controls ---- */
+async function togglePin() {
+  if (window.stickyAPI) {
+    state.pinned = !state.pinned;
+    const actual = await window.stickyAPI.toggleOnTop(state.pinned);
+    state.pinned = actual;
+    document.getElementById('btnPin').classList.toggle('pinned', state.pinned);
+  }
+}
+
+async function minimize() {
+  if (window.stickyAPI) await window.stickyAPI.minimize();
+}
+
+async function closeApp() {
+  if (window.stickyAPI) await window.stickyAPI.close();
+}
+
+/* ---- On load ---- */
+init();
+</script>
+</body>
+</html>
