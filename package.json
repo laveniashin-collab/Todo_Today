@@ -1,6 +1,6 @@
 {
   "name": "todo-today",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Heroin",
   "description": "Todo Today — 桌面待办清单 + 备忘录 + 日历视图，液态玻璃风格 Electron 应用",
   "main": "main.js",
@@ -14,6 +14,14 @@
     "directories": {
       "output": "build"
     },
+    "files": [
+      "main.js",
+      "preload.js",
+      "store.js",
+      "renderer/**",
+      "assets/**",
+      "package.json"
+    ],
     "win": {
       "target": "nsis",
       "icon": "assets/icon.ico"
@@ -21,7 +29,8 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "Todo_Today_Setup_${version}.exe"
+      "artifactName": "Todo_Today_Setup_${version}.exe",
+      "warningsAsErrors": false
     }
   },
   "devDependencies": {
